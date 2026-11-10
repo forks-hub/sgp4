@@ -70,6 +70,10 @@ foreach(target sgp4 sgp4s)
     endif()
 endforeach()
 
+# Install/export only when libsgp4 is the top-level project. As a subproject the
+# consumer owns the install tree, and install(EXPORT) here would either write into
+# the consumer's prefix or register an export set the consumer never declared.
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 install(TARGETS sgp4 sgp4s
     EXPORT SGP4Targets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -98,3 +102,4 @@ install(FILES
     "${PROJECT_BINARY_DIR}/SGP4Config.cmake"
     "${PROJECT_BINARY_DIR}/SGP4ConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SGP4)
+endif()
